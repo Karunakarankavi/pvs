@@ -1,0 +1,86 @@
+com.hotelbooking
+│
+├── controller
+│   ├── AuthController
+│   ├── RoomController
+│   ├── BookingController
+│   ├── AvailabilityController
+│   └── PaymentController (optional)
+│
+├── service
+│   ├── AuthService
+│   ├── RoomService
+│   ├── BookingService
+│
+├── model
+│   ├── User
+│   ├── Room
+│   ├── Booking
+│
+├── repository
+│   ├── UserRepository
+│   ├── RoomRepository
+│   └── BookingRepository
+│
+├── security
+│   └── SecurityConfig
+│
+└── dto
+    └── (Request/Response DTOs)
+
+
+3. RoomController
+Manage room details for the hotel (admin only).
+
+Endpoints:
+
+POST /rooms – Add a new room
+
+GET /rooms – List all rooms
+
+GET /rooms/{id} – Get room by ID
+
+PUT /rooms/{id} – Update room info
+
+DELETE /rooms/{id} – Delete room
+
+4. AvailabilityController
+Check available rooms.
+
+Endpoints:
+
+GET /rooms/available?checkIn=yyyy-MM-dd&checkOut=yyyy-MM-dd
+→ Returns available rooms for the given date range
+
+5. BookingController
+Create/view/cancel room bookings.
+
+Endpoints:
+
+POST /bookings
+→ Book a room (include roomId, check-in, check-out, guests)
+
+GET /bookings/my
+→ Get bookings of the logged-in user
+
+GET /bookings/{id}
+→ Get booking details
+
+DELETE /bookings/{id}
+→ Cancel a booking
+
+6. PaymentController
+(Only if you're integrating PayPal or other payment gateway)
+
+Endpoints:
+
+POST /payments/initiate – Start payment
+
+GET /payments/status?bookingId= – Check payment status
+
+🎯 Roles
+USER – Can view rooms, check availability, make/cancel bookings
+
+ADMIN – Can manage rooms (CRUD)
+
+
