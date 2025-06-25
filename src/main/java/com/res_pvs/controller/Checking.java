@@ -10,7 +10,7 @@ public class Checking {
 	
 	@GetMapping("/check")
 	public String check() {
-		return "Workingzzz...";
+		return "Worki...";
 	}
 	
 	
