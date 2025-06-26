@@ -6,12 +6,12 @@ phases:
       java: corretto17
     commands:
       - echo Installing Maven...
-      - mvn clean install -DskipTests=true
+      - mvn clean package -DskipTests=true
+      - cp target/*.jar application.jar # copy the jar to root with expected name
 
 artifacts:
   files:
-    - target/*.jar
-    - .ebextensions/** # optional
-    - Procfile
-    - Dockerrun.aws.json # if Dockerized
+    - application.jar
+    - .ebextensions/**       # optional: configs for EB
+  discard-paths: yes         # ensures flat structure (no folders inside zip)
 
