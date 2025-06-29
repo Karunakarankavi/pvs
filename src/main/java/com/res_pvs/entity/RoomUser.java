@@ -70,6 +70,16 @@ public class RoomUser {
 	
 	private int zipcode;
 	
+	private String razorpayId;
+
+	public String getRazorpayId() {
+		return razorpayId;
+	}
+
+	public void setRazorpayId(String razorpayId) {
+		this.razorpayId = razorpayId;
+	}
+	
 	
 
 }
