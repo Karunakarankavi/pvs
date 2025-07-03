@@ -12,11 +12,11 @@ public class SecurityConfig {
 
 	@Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        http
+        http.csrf().disable()
             .authorizeHttpRequests(authz -> authz
             		.requestMatchers( "/v3/api-docs/**",   // OpenAPI JSON
                             "/swagger-ui/**",    // Swagger UI
-                            "/swagger-ui.html").permitAll()
+                            "/swagger-ui.html" , "/api/payment/webhook").permitAll()
                 .anyRequest().authenticated()
             )
             .oauth2ResourceServer(oauth2 -> oauth2

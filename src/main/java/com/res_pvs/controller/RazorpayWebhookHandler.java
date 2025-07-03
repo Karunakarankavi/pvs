@@ -2,6 +2,7 @@ package com.res_pvs.controller;
 
 
 
+import org.apache.commons.codec.binary.Hex;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.*;
 import org.springframework.web.bind.annotation.*;
@@ -20,7 +21,12 @@ public class RazorpayWebhookHandler {
     @PostMapping("/webhook")
     public ResponseEntity<String> handleWebhook(@RequestBody String payload,
                                                 @RequestHeader("X-Razorpay-Signature") String signature) {
-        try {
+    	System.out.println("webhook");
+    	System.out.println(payload);
+    	System.out.println(signature);
+    	
+
+    	try {
             boolean verified = verifySignature(payload, signature, webhookSecret);
             if (verified) {
                 System.out.println("✅ Payment Webhook Verified");
@@ -41,7 +47,8 @@ public class RazorpayWebhookHandler {
         SecretKeySpec keySpec = new SecretKeySpec(secret.getBytes(), "HmacSHA256");
         sha256Hmac.init(keySpec);
         byte[] hash = sha256Hmac.doFinal(payload.getBytes());
-        String expectedSignature = new String(Base64.getEncoder().encode(hash));
+        
+        String expectedSignature = new String(Hex.encodeHex(hash));
         return expectedSignature.equals(actualSignature);
     }
 }
