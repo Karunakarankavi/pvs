@@ -24,8 +24,23 @@ public class PaymentController {
     @Value("${razorpay.key_secret}")
     private String keySecret;
     
+    String currency = "INR";
+    
     public PaymentController(RoomUserService roomUserService) {
 		this.roomUserService = roomUserService ;
+    	
+    }
+    
+    @PostMapping("/createOrder")
+    public String createOrder(@RequestParam int amount) throws RazorpayException {
+        RazorpayClient razorpay = new RazorpayClient(keyId, keySecret);
+        JSONObject orderRequest = new JSONObject();
+        orderRequest.put("amount", amount*100);
+        orderRequest.put("currency", currency);
+
+
+        Order order = razorpay.orders.create(orderRequest);
+		return order.toString();
     	
     }
     
@@ -67,6 +82,8 @@ public class PaymentController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(
                     Map.of("error", e.getMessage()));
         }
+        
+        
     }
 
 }
