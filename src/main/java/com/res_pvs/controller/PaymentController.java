@@ -3,6 +3,9 @@ package com.res_pvs.controller;
 
 
 import com.razorpay.*;
+import com.res_pvs.dto.PaymentData;
+import com.res_pvs.service.BookingService;
+import com.res_pvs.service.PaymentService;
 import com.res_pvs.service.RoomUserService;
 
 import org.json.JSONObject;
@@ -17,6 +20,8 @@ import java.util.*;
 public class PaymentController {
 	
 	private final RoomUserService roomUserService;
+	private final PaymentService  paymentService;
+	private final BookingService  bookingService;
 
     @Value("${razorpay.key_id}")
     private String keyId;
@@ -26,8 +31,10 @@ public class PaymentController {
     
     String currency = "INR";
     
-    public PaymentController(RoomUserService roomUserService) {
+    public PaymentController(RoomUserService roomUserService ,PaymentService  paymentService , BookingService  bookingService ) {
 		this.roomUserService = roomUserService ;
+		this.paymentService  = paymentService;
+		this.bookingService  =  bookingService; 
     	
     }
     
@@ -37,12 +44,26 @@ public class PaymentController {
         JSONObject orderRequest = new JSONObject();
         orderRequest.put("amount", amount*100);
         orderRequest.put("currency", currency);
-
-
         Order order = razorpay.orders.create(orderRequest);
 		return order.toString();
     	
     }
+    
+    @PostMapping("/confirmAndBook")
+    public String conformAndBook(@RequestBody PaymentData paymentData) {
+    	String orderId = paymentData.getRazorpayOrderId();
+    	String paymentId = paymentData.getRazorpayPaymentId();
+    	String signature = paymentData.getRazorpaySignature();
+    	if(paymentService.verifySignature(orderId, paymentId  ,signature )) {
+    		bookingService.bookRoom(paymentData.getBookingRequest().getRoomId(), 
+    				paymentData.getBookingRequest().getCheckIn(), 
+    				paymentData.getBookingRequest().getCheckOut(), 
+    				paymentData.getBookingRequest().getUserId());
+    	}
+		return "";
+    	
+    }
+
     
     @PostMapping("/create-link")
     public ResponseEntity<Map<String, Object>> createPaymentLink( @RequestParam int userId ,  @RequestBody Map<String, Object> data) throws Exception {
