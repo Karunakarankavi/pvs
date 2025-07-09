@@ -37,7 +37,7 @@ public class BookingController {
     }
     
     @PostMapping("findAllBookingByUser")
-    public ResponseEntity findAllBookingByUser(@RequestParam int id) {
+    public ResponseEntity findAllBookingByUser(@RequestParam String id) {
     	return bookingService.findAllBookingByUser(id);
     }
     
