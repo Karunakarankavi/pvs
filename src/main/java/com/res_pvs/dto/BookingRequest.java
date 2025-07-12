@@ -26,13 +26,13 @@ public class BookingRequest {
     private LocalDate checkIn;
     private LocalDate checkOut;
      
-    public int getUserId() {
+    public String getUserId() {
 		return userId;
 	}
-	public void setUserId(int userId) {
+	public void setUserId(String userId) {
 		this.userId = userId;
 	}
-	private int userId;
+	private String userId;
     
     
 

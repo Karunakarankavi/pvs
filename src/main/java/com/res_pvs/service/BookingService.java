@@ -32,7 +32,7 @@ public class BookingService {
     }
     
 
-    public String bookRoom(String roomId, LocalDate checkIn, LocalDate checkOut , int userId) {
+    public String bookRoom(String roomId, LocalDate checkIn, LocalDate checkOut , String userId) {
         // Check if the room exists
         RoomDetails room = roomRepo.findById(roomId)
                 .orElseThrow(() -> new RuntimeException("Room not found"));
@@ -57,7 +57,7 @@ public class BookingService {
         return "Booking successful!";
     }
     
-    public ResponseEntity findAllBookingByUser(int id) {
+    public ResponseEntity findAllBookingByUser(String id) {
     	try {
     		List<Booking> allBooking = bookingRepository.findByUserId(id);
     		return ResponseEntity.status(HttpStatus.OK).body(allBooking);

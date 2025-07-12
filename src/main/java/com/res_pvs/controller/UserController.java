@@ -1,6 +1,7 @@
 package com.res_pvs.controller;
 
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -28,9 +29,16 @@ public class UserController {
 	
 	
 	@PutMapping("/updateuser")
-	public ResponseEntity updateUser(@RequestParam int id , @RequestBody RoomUser user) {
+	public ResponseEntity updateUser(@RequestParam String id , @RequestBody RoomUser user) {
 		
 		return userservice.updateUser(id, user);
+	}
+	
+
+	@GetMapping("/getuser")
+	public ResponseEntity getUser(@RequestParam String id ) {
+		
+		return userservice.getUser(id);
 	}
 	
 	

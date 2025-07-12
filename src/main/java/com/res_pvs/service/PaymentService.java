@@ -23,13 +23,8 @@ public class PaymentService {
 	        SecretKeySpec secret_key = new SecretKeySpec(keySecret.getBytes(StandardCharsets.UTF_8), "HmacSHA256");
 	        sha256_HMAC.init(secret_key);
 	        byte[] hash = sha256_HMAC.doFinal(payload.getBytes(StandardCharsets.UTF_8));
-
 	        // Convert to HEX
 	        String generatedSignature = toHex(hash);
-
-	        System.out.println("Generated Signature: " + generatedSignature);
-	        System.out.println("Received Signature : " + razorpaySignature);
-
 	        return generatedSignature.equals(razorpaySignature);
 	    } catch (Exception e) {
 	        e.printStackTrace();

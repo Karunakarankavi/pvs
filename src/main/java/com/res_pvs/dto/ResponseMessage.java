@@ -5,6 +5,17 @@ import org.springframework.stereotype.Component;
 @Component
 public class ResponseMessage {
 	
+	private Object informations;
+
+	
+	public Object getInformations() {
+		return informations;
+	}
+
+	public void setInformations(Object informations) {
+		this.informations = informations;
+	}
+
 	private String message;
 	
 	public String getMessage() {

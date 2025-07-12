@@ -66,7 +66,7 @@ public class PaymentController {
 
     
     @PostMapping("/create-link")
-    public ResponseEntity<Map<String, Object>> createPaymentLink( @RequestParam int userId ,  @RequestBody Map<String, Object> data) throws Exception {
+    public ResponseEntity<Map<String, Object>> createPaymentLink( @RequestParam String userId ,  @RequestBody Map<String, Object> data) throws Exception {
         try {
             RazorpayClient razorpay = new RazorpayClient(keyId, keySecret);
 
