@@ -32,7 +32,7 @@ public class RoomUserService {
 		
 	}
 	
-	public String createAndSaveRazorpayCustomer(int userId) throws Exception {
+	public String createAndSaveRazorpayCustomer(String userId) throws Exception {
 		RoomUser user = userrepo.findById(userId)
                 .orElseThrow(() -> new IllegalArgumentException("User not found"));
        System.out.println(user.getRazorpayId());
@@ -44,7 +44,6 @@ public class RoomUserService {
         customerRequest.put("name", user.getName());
         customerRequest.put("email", user.getEmail());
         customerRequest.put("contact", user.getMobileNumber());
-
         Customer customer = razorpayClient.customers.create(customerRequest);
         String razorpayCustomerId = customer.get("id");
 
@@ -68,7 +67,21 @@ public class RoomUserService {
 		}
 	}
 	
-	public ResponseEntity updateUser(int id , RoomUser userDetails) {
+	public ResponseEntity getUser(String id) {
+		try {
+			Optional<RoomUser> user = this.userrepo.findById(id);
+			response.setMessage("User information retrived successfully");
+			response.setStatus("success");
+			response.setInformations(user);
+            return ResponseEntity.status(HttpStatus.OK).body(response);
+		}catch(Exception e) {
+			response.setMessage(e.getMessage());
+			response.setStatus("failure");
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
+		}
+	}
+	
+	public ResponseEntity updateUser(String id , RoomUser userDetails) {
 		Optional<RoomUser> optionalUser = userrepo.findById(id);
         if (optionalUser.isEmpty()) {
             return ResponseEntity.notFound().build();
@@ -87,6 +100,9 @@ public class RoomUserService {
             }
             if (userDetails.getAddress() != null) {
                 existingUser.setAddress(userDetails.getAddress());
+            }
+            if (userDetails.getZipcode() != 0) {
+                existingUser.setZipcode(userDetails.getZipcode());
             }
             RoomUser updatedUser = userrepo.save(existingUser);
             return ResponseEntity.status(HttpStatus.OK).body(updatedUser);
